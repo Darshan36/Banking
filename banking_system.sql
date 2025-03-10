@@ -1,0 +1,35 @@
+CREATE DATABASE IF NOT EXISTS banking_system;
+
+USE banking_system;
+
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    mpin CHAR(4) NOT NULL
+);
+ALTER TABLE users ADD COLUMN email VARCHAR(100) UNIQUE NOT NULL;
+ALTER TABLE users ADD COLUMN otp VARCHAR(6);
+
+CREATE TABLE accounts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,  -- Hashed Password
+    email VARCHAR(100) UNIQUE NOT NULL,
+    mpin CHAR(4) NOT NULL,
+    balance DECIMAL(10,2) DEFAULT 0
+);
+
+CREATE TABLE transactions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    account_id INT,
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    type ENUM('Deposit', 'Withdraw') NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
+ALTER TABLE accounts ADD COLUMN account_number BIGINT UNIQUE NOT NULL;
+
+
+
